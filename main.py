@@ -14,6 +14,11 @@ import gc
 import pyb
 import cotask
 import task_share
+import print_task
+import encoder
+import motor
+import pidcontroller
+
 
 kp = 0.9*(360/_PPR)
 ki = 0*(360/_PPR)
@@ -35,6 +40,7 @@ def task_controller_fun ():
     """
     while True:
         motor1.set_duty_cycle(pidController1.run()) # set motor duty
+        shares.print_task.put()
         yield ()
 
 
@@ -78,6 +84,10 @@ if __name__ == "__main__":
                          period = 10, profile = True, trace = False)
     task_controller = cotask.Task (task_controller_fun, name = 'Controller_Task', priority = 1, 
                          period = 10, profile = True, trace = False)
+    # In the main module or wherever tasks are created:
+    shares.print_task = print_task.PrintTask (name = 'Printing', 
+        buf_size = 100, thread_protect = True, priority = 0)
+    cotask.task_list.append (shares.print_task)
     cotask.task_list.append (task_encoder)
     cotask.task_list.append (task_controller)
 
