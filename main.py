@@ -15,17 +15,11 @@ import pyb
 import cotask
 import task_share
 
-kp = float(0.9)*(360/_PPR)
-ki = float(0)*(360/_PPR)
-kd = float(0)*(360/_PPR)
+kp = 0.9*(360/_PPR)
+ki = 0*(360/_PPR)
+kd = 0*(360/_PPR)
 # Read time length of step response from serial port
-_stepResponseTime = float(3)
-pidController1.set_gains(kp, ki, kd) # Kd
-# Read desired set point position from serial port
-# Converts degrees to ticks
-pidController1.set_set_point(float(360)*(_PPR/360))
-
-# Read time length of step response from serial port
+_stepResponseTime = 3
 
 def task_enc_fun():
     """!
@@ -59,6 +53,11 @@ if __name__ == "__main__":
     
     # Instantiate proportional controller 1
     pidController1 = pidcontroller.PIDController(0, 1, 0, 0, encoder_share)
+    
+    pidController1.set_gains(kp, ki, kd) # Kd
+    # Read desired set point position from serial port
+    # Converts degrees to ticks
+    pidController1.set_set_point(float(360)*(_PPR/360))
     
     # Instantiate motor 1 with default pins and timer
     motor1 = motor.MotorDriver(pyb.Pin.board.PA10, pyb.Pin.board.PB4,
