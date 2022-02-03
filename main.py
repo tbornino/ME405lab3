@@ -15,32 +15,33 @@ import pyb
 import cotask
 import task_share
 
+kp = float(0.9)*(360/_PPR)
+ki = float(0)*(360/_PPR)
+kd = float(0)*(360/_PPR)
+# Read time length of step response from serial port
+_stepResponseTime = float(3)
+pidController1.set_gains(kp, ki, kd) # Kd
+# Read desired set point position from serial port
+# Converts degrees to ticks
+pidController1.set_set_point(float(360)*(_PPR/360))
 
-def task1_fun ():
+# Read time length of step response from serial port
+
+def task_enc_fun():
     """!
-    Task which puts things into a share and a queue.
-    """
-    counter = 0
-    while True:
-        share0.put (counter)
-        q0.put (counter)
-        counter += 1
-
-        yield (0)
-
-
-def task2_fun ():
-    """!
-    Task which takes things out of a queue and share to display.
+    Task which reads encoders position
     """
     while True:
-        # Show everything currently in the queue and the value in the share
-        print ("Share: {:}, Queue: ".format (share0.get ()), end='');
-        while q0.any ():
-            print ("{:} ".format (q0.get ()), end='')
-        print ('')
+        encoder_share.put (encoder1.read())
+        yield ()
 
-        yield (0)
+def task_controller_fun ():
+    """!
+    Task that runs a PID controller.
+    """
+    while True:
+        motor1.set_duty_cycle(pidController1.run()) # set motor duty
+        yield ()
 
 
 # This code creates a share, a queue, and two tasks, then starts the tasks. The
@@ -51,20 +52,32 @@ if __name__ == "__main__":
            'Press ENTER to stop and show diagnostics.')
 
     # Create a share and a queue to test function and diagnostic printouts
-    share0 = task_share.Share ('h', thread_protect = False, name = "Share 0")
-    q0 = task_share.Queue ('L', 16, thread_protect = False, overwrite = False,
-                           name = "Queue 0")
+    encoder_share = task_share.Share('i', thread_protect = False, name = "Encoder Share")
+    
+     # Instantiate encoder 1 with default pins and timer
+    encoder1 = encoder.EncoderDriver(pyb.Pin.cpu.B6, pyb.Pin.cpu.B7, 4)
+    
+    # Instantiate proportional controller 1
+    pidController1 = pidcontroller.PIDController(0, 1, 0, 0, encoder_share)
+    
+    # Instantiate motor 1 with default pins and timer
+    motor1 = motor.MotorDriver(pyb.Pin.board.PA10, pyb.Pin.board.PB4,
+                               pyb.Pin.board.PB5, pyb.Timer(3, freq=20000))
+    
+#     share0 = task_share.Share ('h', thread_protect = False, name = "Share 0")
+#     q0 = task_share.Queue ('L', 16, thread_protect = False, overwrite = False,
+#                            name = "Queue 0")
 
     # Create the tasks. If trace is enabled for any task, memory will be
     # allocated for state transition tracing, and the application will run out
     # of memory after a while and quit. Therefore, use tracing only for 
     # debugging and set trace to False when it's not needed
-    task1 = cotask.Task (task1_fun, name = 'Task_1', priority = 1, 
-                         period = 400, profile = True, trace = False)
-    task2 = cotask.Task (task2_fun, name = 'Task_2', priority = 2, 
-                         period = 1500, profile = True, trace = False)
-    cotask.task_list.append (task1)
-    cotask.task_list.append (task2)
+    task_encoder = cotask.Task (task_enc_fun, name = 'Encoder_Task', priority = 2, 
+                         period = 10, profile = True, trace = False)
+    task_controller = cotask.Task (task_controller_fun, name = 'Controller_Task', priority = 1, 
+                         period = 10, profile = True, trace = False)
+    cotask.task_list.append (task_encoder)
+    cotask.task_list.append (task_controller)
 
     # Run the memory garbage collector to ensure memory is as defragmented as
     # possible before the real-time scheduler is started
