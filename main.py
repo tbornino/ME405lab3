@@ -50,6 +50,7 @@ if __name__ == "__main__":
     
      # Instantiate encoder 1 with default pins and timer
     encoder1 = encoder.EncoderDriver(pyb.Pin.cpu.B6, pyb.Pin.cpu.B7, 4)
+    encoder2 = encoder.EncoderDriver(pyb.Pin.cpu.C6, pyb.Pin.cpu.C7, 8)
     
     # Instantiate proportional controller 1
     pidController1 = pidcontroller.PIDController(0, 1, 0, 0, encoder_share)
@@ -62,6 +63,8 @@ if __name__ == "__main__":
     # Instantiate motor 1 with default pins and timer
     motor1 = motor.MotorDriver(pyb.Pin.board.PA10, pyb.Pin.board.PB4,
                                pyb.Pin.board.PB5, pyb.Timer(3, freq=20000))
+    motor2 = motor.MotorDriver(pyb.Pin.board.PC1, pyb.Pin.board.PA0,
+                               pyb.Pin.board.PA1, pyb.Timer(5, freq=20000))
     
 #     share0 = task_share.Share ('h', thread_protect = False, name = "Share 0")
 #     q0 = task_share.Queue ('L', 16, thread_protect = False, overwrite = False,
