@@ -20,6 +20,7 @@ import motor
 import pidcontroller
 import time
 
+_PPR = 256*4*16
 kp = 0.9*(360/_PPR)
 ki = 0*(360/_PPR)
 kd = 0*(360/_PPR)
@@ -50,10 +51,10 @@ def task_controller1_fun ():
         motor1.set_duty_cycle(pidController1.run()) # set motor duty
         done = False
         if time.ticks_diff(time.ticks_ms(),start_time) < _stepResponseTime:
-            shares.print_task.put(pidController1.get_data_str())
+            print_task.put(pidController1.get_data_str())
         else:
             if not done:
-                shares.print_task.put("Done!")
+                print_task.put("Done!\r\n")
                 done = True
         yield ()
 
@@ -116,9 +117,9 @@ if __name__ == "__main__":
                          period = 10, profile = True, trace = False)
     
     # In the main module or wherever tasks are created:
-    shares.print_task = print_task.PrintTask (name = 'Printing', 
-        buf_size = 100, thread_protect = True, priority = 0)
-    cotask.task_list.append (shares.print_task)
+#     shares.print_task = print_task.PrintTask (name = 'Printing', 
+#         buf_size = 100, thread_protect = True, priority = 0)
+    #cotask.task_list.append (shares.print_task)
     cotask.task_list.append (task_encoder1)
     cotask.task_list.append (task_controller1)
     cotask.task_list.append (task_encoder2)
@@ -130,7 +131,7 @@ if __name__ == "__main__":
 
     # Run the scheduler with the chosen scheduling algorithm. Quit if any 
     # character is received through the serial port
-    start_time = utime.ticks_ms()
+    start_time = time.ticks_ms()
     while True:
         try:
             cotask.task_list.pri_sched ()
