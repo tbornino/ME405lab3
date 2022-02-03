@@ -35,7 +35,7 @@ class PIDController:
         
         ##  @brief      Stored Step Response Data.
         #   @details    Recorded as (time(ms), position(ticks))
-        self.data_list = []
+       # self.data_list = []
         
         ##  @brief      Step response start time
         self.start_time = None
@@ -46,8 +46,8 @@ class PIDController:
         
         # Active Data Store Counter
         ## Number of times the controller runs before a data sample is stored
-        self.data_store_counter = 1
-        self._counter = self.data_store_counter
+        #self.data_store_counter = 1
+        #self._counter = self.data_store_counter
         
         
     def run(self):
@@ -65,7 +65,7 @@ class PIDController:
             self._last_time = self.start_time
         
         # Calculate the current error in position
-        error = self._sensor_share.read() - self._set_point
+        error = self._sensor_share.get() - self._set_point
         curr_time = time.ticks_diff(time.ticks_ms(),self.start_time)
         
         # Calculate the PID actuation value
@@ -83,11 +83,11 @@ class PIDController:
         actuation_value = Pduty + self._Iduty + Dduty
         
         # Store the time and position data
-        if self._counter <= 0:
-            self.data_store()
-            self._counter = self.data_store_counter
-        else:
-            self._counter-=1
+#         if self._counter <= 0:
+#             self.data_store()
+#             self._counter = self.data_store_counter
+#         else:
+#             self._counter-=1
         
         # Filter saturated values
         if actuation_value > 100:
@@ -129,7 +129,7 @@ class PIDController:
         Stores the data in a csv format.
         '''            
         self.data_list.append((time.ticks_diff(time.ticks_ms(),self.start_time),
-                                self._sensor_share.read()))
+                                self._sensor_share.get()))
         
     def print_data(self):
         '''!
@@ -146,4 +146,4 @@ class PIDController:
         self._Iduty = 0
             
     def get_data_str(self):
-        return f"{time.ticks_diff(time.ticks_ms(),self.start_time)},{self._sensor_share.read()}"
+        return f"{time.ticks_diff(time.ticks_ms(),self.start_time)},{self._sensor_share.get()}\r\n"
