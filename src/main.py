@@ -18,13 +18,13 @@ import print_task
 import encoder
 import motor
 import pidcontroller
-
+import time
 
 kp = 0.9*(360/_PPR)
 ki = 0*(360/_PPR)
 kd = 0*(360/_PPR)
 # Read time length of step response from serial port
-_stepResponseTime = 3
+_stepResponseTime = 3*1000  #ms
 
 def task_enc1_fun():
     """!
@@ -48,7 +48,13 @@ def task_controller1_fun ():
     """
     while True:
         motor1.set_duty_cycle(pidController1.run()) # set motor duty
-        shares.print_task.put(pidController1.get_data_str())
+        done = False
+        if time.ticks_diff(time.ticks_ms(),start_time) < _stepResponseTime:
+            shares.print_task.put(pidController1.get_data_str())
+        else:
+            if not done:
+                shares.print_task.put("Done!")
+                done = True
         yield ()
 
 def task_controller2_fun ():
@@ -67,15 +73,15 @@ if __name__ == "__main__":
     print ('\033[2JTesting ME405 stuff in cotask.py and task_share.py\r\n'
            'Press ENTER to stop and show diagnostics.')
 
-    # Create a share and a queue to test function and diagnostic printouts
+    # Create 2 encoder shares to share position data.
     encoder1_share = task_share.Share('i', thread_protect = False, name = "Encoder 1 Share")
     encoder2_share = task_share.Share('i', thread_protect = False, name = "Encoder 2 Share")
     
-     # Instantiate encoder 1 with default pins and timer
+    # Instantiate encoders with default pins and timer
     encoder1 = encoder.EncoderDriver(pyb.Pin.cpu.B6, pyb.Pin.cpu.B7, 4)
     encoder2 = encoder.EncoderDriver(pyb.Pin.cpu.C6, pyb.Pin.cpu.C7, 8)
     
-    # Instantiate proportional controller 1
+    # Instantiate proportional controllers with initial gains and  
     pidController1 = pidcontroller.PIDController(0, 1, 0, 0, encoder1_share)
     pidController2 = pidcontroller.PIDController(0, 1, 0, 0, encoder2_share)
     
@@ -124,15 +130,15 @@ if __name__ == "__main__":
 
     # Run the scheduler with the chosen scheduling algorithm. Quit if any 
     # character is received through the serial port
-    vcp = pyb.USB_VCP ()
-    while not vcp.any ():
-        cotask.task_list.pri_sched ()
+    start_time = utime.ticks_ms()
+    while True:
+        try:
+            cotask.task_list.pri_sched ()
+        except KeyboardInterrupt:
+            break
 
-    # Empty the comm port buffer of the character(s) just pressed
-    vcp.read ()
-
-    # Print a table of task data and a table of shared information data
-    print ('\n' + str (cotask.task_list))
-    print (task_share.show_all ())
-    print (task1.get_trace ())
-    print ('\r\n')
+#     # Print a table of task data and a table of shared information data
+#     print ('\n' + str (cotask.task_list))
+#     print (task_share.show_all ())
+#     print (task1.get_trace ())
+#     print ('\r\n')
