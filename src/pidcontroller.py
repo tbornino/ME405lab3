@@ -69,7 +69,7 @@ class PIDController:
         curr_time = time.ticks_diff(time.ticks_ms(),self.start_time)
         
         # Calculate the PID actuation value
-        Pduty = self._Kp*error
+        Pduty = -self._Kp*error
         
         _Iduty_new = self._Ki*error*(curr_time - self._last_time)
         if (self._Iduty > 0 and _Iduty_new < 0) \

@@ -47,9 +47,9 @@ def task_controller1_fun ():
     """!
     Task that runs a PID controller.
     """
+    done = False
     while True:
         motor1.set_duty_cycle(pidController1.run()) # set motor duty
-        done = False
         if time.ticks_diff(time.ticks_ms(),start_time) < _stepResponseTime:
             print_task.put(pidController1.get_data_str())
         else:
@@ -71,8 +71,6 @@ def task_controller2_fun ():
 # tasks run until somebody presses ENTER, at which time the scheduler stops and
 # printouts show diagnostic information about the tasks, share, and queue.
 if __name__ == "__main__":
-    print ('\033[2JTesting ME405 stuff in cotask.py and task_share.py\r\n'
-           'Press ENTER to stop and show diagnostics.')
 
     # Create 2 encoder shares to share position data.
     encoder1_share = task_share.Share('i', thread_protect = False, name = "Encoder 1 Share")
