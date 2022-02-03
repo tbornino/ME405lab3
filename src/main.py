@@ -26,21 +26,37 @@ kd = 0*(360/_PPR)
 # Read time length of step response from serial port
 _stepResponseTime = 3
 
-def task_enc_fun():
+def task_enc1_fun():
     """!
     Task which reads encoders position
     """
     while True:
-        encoder_share.put (encoder1.read())
+        encoder1_share.put (encoder1.read())
         yield ()
 
-def task_controller_fun ():
+def task_enc2_fun():
+    """!
+    Task which reads encoders position
+    """
+    while True:
+        encoder2_share.put (encoder2.read())
+        yield ()
+        
+def task_controller1_fun ():
     """!
     Task that runs a PID controller.
     """
     while True:
         motor1.set_duty_cycle(pidController1.run()) # set motor duty
-        shares.print_task.put()
+        shares.print_task.put(pidController1.get_data_str())
+        yield ()
+
+def task_controller2_fun ():
+    """!
+    Task that runs a PID controller.
+    """
+    while True:
+        motor2.set_duty_cycle(pidController2.run()) # set motor duty
         yield ()
 
 
@@ -52,19 +68,23 @@ if __name__ == "__main__":
            'Press ENTER to stop and show diagnostics.')
 
     # Create a share and a queue to test function and diagnostic printouts
-    encoder_share = task_share.Share('i', thread_protect = False, name = "Encoder Share")
+    encoder1_share = task_share.Share('i', thread_protect = False, name = "Encoder 1 Share")
+    encoder2_share = task_share.Share('i', thread_protect = False, name = "Encoder 2 Share")
     
      # Instantiate encoder 1 with default pins and timer
     encoder1 = encoder.EncoderDriver(pyb.Pin.cpu.B6, pyb.Pin.cpu.B7, 4)
     encoder2 = encoder.EncoderDriver(pyb.Pin.cpu.C6, pyb.Pin.cpu.C7, 8)
     
     # Instantiate proportional controller 1
-    pidController1 = pidcontroller.PIDController(0, 1, 0, 0, encoder_share)
+    pidController1 = pidcontroller.PIDController(0, 1, 0, 0, encoder1_share)
+    pidController2 = pidcontroller.PIDController(0, 1, 0, 0, encoder2_share)
     
-    pidController1.set_gains(kp, ki, kd) # Kd
+    pidController1.set_gains(kp, ki, kd)
+    pidController2.set_gains(kp, ki, kd)
     # Read desired set point position from serial port
     # Converts degrees to ticks
     pidController1.set_set_point(float(360)*(_PPR/360))
+    pidController2.set_set_point(float(360)*(_PPR/360))
     
     # Instantiate motor 1 with default pins and timer
     motor1 = motor.MotorDriver(pyb.Pin.board.PA10, pyb.Pin.board.PB4,
@@ -80,16 +100,23 @@ if __name__ == "__main__":
     # allocated for state transition tracing, and the application will run out
     # of memory after a while and quit. Therefore, use tracing only for 
     # debugging and set trace to False when it's not needed
-    task_encoder = cotask.Task (task_enc_fun, name = 'Encoder_Task', priority = 2, 
+    task_encoder1 = cotask.Task (task_enc1_fun, name = 'Encoder_1_Task', priority = 2, 
                          period = 10, profile = True, trace = False)
-    task_controller = cotask.Task (task_controller_fun, name = 'Controller_Task', priority = 1, 
+    task_encoder2 = cotask.Task (task_enc2_fun, name = 'Encoder_2_Task', priority = 2, 
                          period = 10, profile = True, trace = False)
+    task_controller1 = cotask.Task (task_controller1_fun, name = 'Controller_1_Task', priority = 1, 
+                         period = 10, profile = True, trace = False)
+    task_controller2 = cotask.Task (task_controller2_fun, name = 'Controller_2_Task', priority = 1, 
+                         period = 10, profile = True, trace = False)
+    
     # In the main module or wherever tasks are created:
     shares.print_task = print_task.PrintTask (name = 'Printing', 
         buf_size = 100, thread_protect = True, priority = 0)
     cotask.task_list.append (shares.print_task)
-    cotask.task_list.append (task_encoder)
-    cotask.task_list.append (task_controller)
+    cotask.task_list.append (task_encoder1)
+    cotask.task_list.append (task_controller1)
+    cotask.task_list.append (task_encoder2)
+    cotask.task_list.append (task_controller2)
 
     # Run the memory garbage collector to ensure memory is as defragmented as
     # possible before the real-time scheduler is started
