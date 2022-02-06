@@ -94,7 +94,7 @@ if __name__ == "__main__":
     pidController2.set_gains(kp, ki, kd)
     # Read desired set point position from serial port
     # Converts degrees to ticks
-    pidController1.set_set_point(float(360)*(_PPR/360))
+    pidController1.set_set_point(float(720)*(_PPR/360))
     pidController2.set_set_point(float(360)*(_PPR/360))
     
     # Instantiate motor 1 with default pins and timer
