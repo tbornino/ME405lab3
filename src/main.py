@@ -50,9 +50,13 @@ def task_controller1_fun ():
     """!
     Task that runs a PID controller.
     """
-    done = False
     while True:
         motor1.set_duty_cycle(pidController1.run()) # set motor duty
+        yield ()
+        
+def task_data1_fun ():
+    done = False
+    while True:
         if time.ticks_diff(time.ticks_ms(),start_time) < _stepResponseTime:
             print_task.put(pidController1.get_data_str())
         else:
@@ -115,6 +119,8 @@ if __name__ == "__main__":
                          period = 10, profile = True, trace = False)
     task_controller2 = cotask.Task (task_controller2_fun, name = 'Controller_2_Task', priority = 1, 
                          period = 10, profile = True, trace = False)
+    task_data1 = cotask.Task (task_data1_fun, name = 'Data Collection Task', priority = 0,
+                              period = 10, profile = True, trace = False)
     
     # In the main module or wherever tasks are created:
 #     shares.print_task = print_task.PrintTask (name = 'Printing', 
@@ -124,6 +130,7 @@ if __name__ == "__main__":
     cotask.task_list.append (task_controller1)
     cotask.task_list.append (task_encoder2)
     cotask.task_list.append (task_controller2)
+    cotask.task_list.append (task_data1)
 
     # Run the memory garbage collector to ensure memory is as defragmented as
     # possible before the real-time scheduler is started

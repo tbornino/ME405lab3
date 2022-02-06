@@ -15,43 +15,16 @@ import time
 _PPR = 256*4*16
 _set_point = 360 # deg
 
-# Collect input
-# while True:
-#     _set_point_str = input("enter desired setpoint (degrees): ")
-#     _p_gain_str = input("enter desired proportional gain (%/degree): ")
-#     _i_gain_str = input("enter desired integral gain (%/degree-s): ")
-#     _d_gain_str = input("enter desired derivative gain (%/(degree/s)): ")
-#     _t_step_str = input("enter time to run step response (seconds): ")
-#     # Make sure all inputs are valid numbers
-#     try:
-#         float(_p_gain_str)
-#         float(_i_gain_str)
-#         float(_d_gain_str)
-#         _t_step = float(_t_step_str)
-#         _set_point = float(_set_point_str)
-#     except ValueError:
-#         print("Invalid value given, try again")
-#     else:
-#         break
- 
 # Open serial port with the Nucleo
 _port = "COM3"
 with serial.Serial(_port, 115200, timeout=1) as ser_port:
-    # Send gains to Nucleo, with line ending
-#     ser_port.write(set_point_str.encode() + b'\r\n')
-#     ser_port.write(p_gain_str.encode() + b'\r\n')
-#     ser_port.write(i_gain_str.encode() + b'\r\n')
-#     ser_port.write(d_gain_str.encode() + b'\r\n')
-#     ser_port.write(t_step_str.encode() + b'\r\n')
-#     time.sleep(t_step + 1)
-    # Receive data from the Nucleo and process it into 2 lists
+    # Reset the Nucleo and start its program
     ser_port.write(b'\x03')
     time.sleep(1)
-#     ser_port.write(b'\x04')
-#     time.sleep(1)
     ser_port.write(b'\x02')
     time.sleep(1)
     ser_port.write(b'\x04')
+    # Receive data from the Nucleo and process it into 2 lists
     _xs = []
     _ys = []
     while True:
