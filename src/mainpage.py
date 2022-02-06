@@ -23,5 +23,5 @@
     @author             Tori Bornino
     @author             Jackson McLaughlin
     @author             Zach Stednitz
-    @date               February, 10 2022
+    @date               February 10, 2022
 '''
