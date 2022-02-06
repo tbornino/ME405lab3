@@ -43,6 +43,9 @@ class PIDController:
         self._last_error = 0
         self._Iduty = 0
         
+        ##  @brief Data Collection Start Time
+        self.data_start_time = None
+        
         
     def run(self):
         '''! 
@@ -116,4 +119,7 @@ class PIDController:
         Returns the current time (ms) and position (ticks) as a string.
         The string output is: "time,position\r\n"
         '''
-        return f"{time.ticks_diff(time.ticks_ms(),self.start_time)},{self._sensor_share.get()}\n"
+        if self.data_start_time == None:
+            self.data_start_time = time.ticks_ms()
+        return f"{time.ticks_diff(time.ticks_ms(),self.data_start_time)},"
+                "{self._sensor_share.get()}\n"
