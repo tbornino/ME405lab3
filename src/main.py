@@ -57,7 +57,7 @@ def task_controller1_fun ():
 def task_data1_fun ():
     done = False
     while True:
-        if time.ticks_diff(time.ticks_ms(),start_time) < _stepResponseTime:
+        if time.ticks_diff(time.ticks_ms(), tasks_start_time) < _stepResponseTime:
             print_task.put(pidController1.get_data_str())
         else:
             if not done:
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     gc.collect ()
 
     # Run the scheduler with the chosen scheduling algorithm. Quit if KeyboardInterrupt
-    start_time = time.ticks_ms()
+    tasks_start_time = time.ticks_ms()
     while True:
         try:
             cotask.task_list.pri_sched ()
