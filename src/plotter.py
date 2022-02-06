@@ -29,7 +29,7 @@ with serial.Serial(_port, 115200, timeout=1) as ser_port:
     _ys = []
     while True:
         _line = ser_port.readline()
-        print(_line)
+        print(_line.decode('utf-8'), end='')
         if _line == b'Done!\r\n':
             break
         _cells = _line.split(b',')
