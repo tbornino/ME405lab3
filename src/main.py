@@ -56,6 +56,7 @@ def task_controller1_fun ():
         
 def task_data1_fun ():
     done = False
+    while True:
         if time.ticks_diff(time.ticks_ms(),start_time) < _stepResponseTime:
             print_task.put(pidController1.get_data_str())
         else:
