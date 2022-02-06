@@ -9,6 +9,10 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -37,11 +41,23 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><b>pidcontroller</b></li><li class="navelem"><a class="el" href="classpidcontroller_1_1_p_i_d_controller.html">PIDController</a></li>  </ul>
-</div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classpidcontroller_1_1_p_i_d_controller.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -51,7 +67,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This class implements a generic proportional controller.  
+<p>This class implements a PID controller.  
  <a href="classpidcontroller_1_1_p_i_d_controller.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -68,34 +84,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6f0b1af0641a279f525dd57b1e7980c4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpidcontroller_1_1_p_i_d_controller.html#a6f0b1af0641a279f525dd57b1e7980c4">set_gains</a> (self, Kp, Ki, Kd)</td></tr>
 <tr class="memdesc:a6f0b1af0641a279f525dd57b1e7980c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the proportional gain controller value.  <a href="classpidcontroller_1_1_p_i_d_controller.html#a6f0b1af0641a279f525dd57b1e7980c4">More...</a><br /></td></tr>
 <tr class="separator:a6f0b1af0641a279f525dd57b1e7980c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0c214b1195ed4c75ee0887d6c0c8bd0"><td class="memItemLeft" align="right" valign="top"><a id="ac0c214b1195ed4c75ee0887d6c0c8bd0" name="ac0c214b1195ed4c75ee0887d6c0c8bd0"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>data_store</b> (self)</td></tr>
-<tr class="memdesc:ac0c214b1195ed4c75ee0887d6c0c8bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the data in a csv format. <br /></td></tr>
-<tr class="separator:ac0c214b1195ed4c75ee0887d6c0c8bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac65ee076bbc6a2c88760630d372eb40d"><td class="memItemLeft" align="right" valign="top"><a id="ac65ee076bbc6a2c88760630d372eb40d" name="ac65ee076bbc6a2c88760630d372eb40d"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>print_data</b> (self)</td></tr>
-<tr class="memdesc:ac65ee076bbc6a2c88760630d372eb40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints each line in the data list in a comma separated format. <br /></td></tr>
-<tr class="separator:ac65ee076bbc6a2c88760630d372eb40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a382c92ce63b2ae5b30ea64b3ffd7bfc4"><td class="memItemLeft" align="right" valign="top"><a id="a382c92ce63b2ae5b30ea64b3ffd7bfc4" name="a382c92ce63b2ae5b30ea64b3ffd7bfc4"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>get_data_str</b> (self)</td></tr>
+<tr class="memitem:a382c92ce63b2ae5b30ea64b3ffd7bfc4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpidcontroller_1_1_p_i_d_controller.html#a382c92ce63b2ae5b30ea64b3ffd7bfc4">get_data_str</a> (self)</td></tr>
+<tr class="memdesc:a382c92ce63b2ae5b30ea64b3ffd7bfc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current time (ms) and position (ticks) as a string.  <a href="classpidcontroller_1_1_p_i_d_controller.html#a382c92ce63b2ae5b30ea64b3ffd7bfc4">More...</a><br /></td></tr>
 <tr class="separator:a382c92ce63b2ae5b30ea64b3ffd7bfc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac54935462efa18cf228eb5177a213d5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpidcontroller_1_1_p_i_d_controller.html#ac54935462efa18cf228eb5177a213d5b">data_list</a></td></tr>
-<tr class="memdesc:ac54935462efa18cf228eb5177a213d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored Step Response Data.  <a href="classpidcontroller_1_1_p_i_d_controller.html#ac54935462efa18cf228eb5177a213d5b">More...</a><br /></td></tr>
-<tr class="separator:ac54935462efa18cf228eb5177a213d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d3b1581d93af2647b3843340b01923c"><td class="memItemLeft" align="right" valign="top"><a id="a4d3b1581d93af2647b3843340b01923c" name="a4d3b1581d93af2647b3843340b01923c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>start_time</b></td></tr>
 <tr class="memdesc:a4d3b1581d93af2647b3843340b01923c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step response start time. <br /></td></tr>
 <tr class="separator:a4d3b1581d93af2647b3843340b01923c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03c3148b84d062c898e6e0929289c6d9"><td class="memItemLeft" align="right" valign="top"><a id="a03c3148b84d062c898e6e0929289c6d9" name="a03c3148b84d062c898e6e0929289c6d9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>data_store_counter</b></td></tr>
-<tr class="memdesc:a03c3148b84d062c898e6e0929289c6d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of times the controller runs before a data sample is stored. <br /></td></tr>
-<tr class="separator:a03c3148b84d062c898e6e0929289c6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class implements a generic proportional controller. </p>
+<div class="textblock"><p >This class implements a PID controller. </p>
+<p >It contains methods for setting the set point, Kp, Ki, and Kd gains. As well as a method for printing run data: time (ms) and position (ticks). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3c6fa4667aa89493bd4ed0fe4fcf33dd" name="a3c6fa4667aa89493bd4ed0fe4fcf33dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c6fa4667aa89493bd4ed0fe4fcf33dd">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -164,6 +166,27 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a382c92ce63b2ae5b30ea64b3ffd7bfc4" name="a382c92ce63b2ae5b30ea64b3ffd7bfc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a382c92ce63b2ae5b30ea64b3ffd7bfc4">&#9670;&nbsp;</a></span>get_data_str()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def pidcontroller.PIDController.get_data_str </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current time (ms) and position (ticks) as a string. </p>
+<p >The string output is: "time,position\r\n" </p>
+
+</div>
+</div>
 <a id="a671fe2c266398a52b03cc57ee5b0be2a" name="a671fe2c266398a52b03cc57ee5b0be2a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a671fe2c266398a52b03cc57ee5b0be2a">&#9670;&nbsp;</a></span>run()</h2>
 
@@ -273,31 +296,17 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ac54935462efa18cf228eb5177a213d5b" name="ac54935462efa18cf228eb5177a213d5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac54935462efa18cf228eb5177a213d5b">&#9670;&nbsp;</a></span>data_list</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">pidcontroller.PIDController.data_list</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Stored Step Response Data. </p>
-<p >Recorded as (time(ms), position(ticks)) </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/<a class="el" href="pidcontroller_8py.html">pidcontroller.py</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><b>pidcontroller</b></li><li class="navelem"><a class="el" href="classpidcontroller_1_1_p_i_d_controller.html">PIDController</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -9,10 +9,11 @@
                         ME 405 - Mechatronics, Lab 3: Task Scheduler  
                         Implementation, taught in Winter 2022 by Dr. John 
                         Ridgly. Source code is available at:
-                        https://tbornino.github.io/ME405lab3/
+                        https://github.com/tbornino/ME405lab3
     
     @section sec_sch    Task Scheduler in Main
-                        We were supplied with a cotask.py to implement
+                        We were supplied with cotask.py, task_share.py, and
+                        print_task.py to implement
                         a scheduler to run our step response. The 
                         @ref motor.MotorDriver "Motor Driver", 
                         @ref encoder.EncoderDriver "Encoder Driver", and
