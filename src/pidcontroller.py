@@ -36,7 +36,7 @@ class PIDController:
         self._sensor_share = sensor_share
               
         ##  @brief      Step response start time
-        self.start_time = None
+        self.step_start_time = None
         
         # Store data to calculate actuation value
         self._last_time = 0
@@ -57,13 +57,13 @@ class PIDController:
         @return The actuation value to fix steady state error.
         '''
         # Store initial step time
-        if self.start_time == None:
-            self.start_time = time.ticks_ms()
-            self._last_time = self.start_time
+        if self.step_start_time == None:
+            self.step_start_time = time.ticks_ms()
+            self._last_time = self.step_start_time
         
         # Calculate the current error in position
         error = self._sensor_share.get() - self._set_point
-        curr_time = time.ticks_diff(time.ticks_ms(),self.start_time)
+        curr_time = time.ticks_diff(time.ticks_ms(),self.step_start_time)
         
         # Calculate the PID actuation value
         Pduty = -self._Kp*error
