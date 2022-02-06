@@ -57,7 +57,7 @@ def task_controller1_fun ():
             print_task.put(pidController1.get_data_str())
         else:
             if not done:
-                print_task.put("Done!\r\n")
+                print_task.put("Done!\n")
                 done = True
         yield ()
 

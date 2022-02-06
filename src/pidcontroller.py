@@ -146,4 +146,4 @@ class PIDController:
         self._Iduty = 0
             
     def get_data_str(self):
-        return f"{time.ticks_diff(time.ticks_ms(),self.start_time)},{self._sensor_share.get()}\r\n"
+        return f"{time.ticks_diff(time.ticks_ms(),self.start_time)},{self._sensor_share.get()}\n"

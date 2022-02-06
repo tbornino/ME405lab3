@@ -45,11 +45,18 @@ with serial.Serial(_port, 115200, timeout=1) as ser_port:
 #     ser_port.write(t_step_str.encode() + b'\r\n')
 #     time.sleep(t_step + 1)
     # Receive data from the Nucleo and process it into 2 lists
-#    ser_port.write(b'\x04')
+    ser_port.write(b'\x03')
+    time.sleep(1)
+#     ser_port.write(b'\x04')
+#     time.sleep(1)
+    ser_port.write(b'\x02')
+    time.sleep(1)
+    ser_port.write(b'\x04')
     _xs = []
     _ys = []
     while True:
         _line = ser_port.readline()
+        print(_line)
         if _line == b'Done!\r\n':
             break
         _cells = _line.split(b',')
