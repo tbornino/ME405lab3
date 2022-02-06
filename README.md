@@ -16,7 +16,7 @@ integral controller in addition to the proportional controller used.
 ## Step Response Plots
 | ![Step Response 1: K_P = 0.9](plots/10ms.png) |
 |:--:|
-|**Figure 1: K<sub>P</sub> = 0.3, Task Run Rate = 10ms**|
+|**Figure 1: K<sub>P</sub> = 0.9, Task Run Rate = 10ms**|
 
 
 | ![Step Response 2: K_P = 0.9](plots/50ms.png) |
