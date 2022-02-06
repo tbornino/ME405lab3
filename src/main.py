@@ -1,10 +1,13 @@
 """!
-@file basic_tasks.py
-    This file contains a demonstration program that runs some tasks, an
-    inter-task shared variable, and a queue. The tasks don't really @b do
-    anything; the example just shows how these elements are created and run.
+@file main.py
+    This file contains a program capable of running multiple tasks simultaneously
+    using a real time scheduler. 
 
-@author JR Ridgely
+@author             Tori Bornino
+@author             Jackson McLaughlin
+@author             Zach Stednitz
+@date               February, 10 2022
+
 @date   2021-Dec-15 JRR Created from the remains of previous example
 @copyright (c) 2015-2021 by JR Ridgely and released under the GNU
     Public License, Version 2. 
@@ -67,9 +70,8 @@ def task_controller2_fun ():
         yield ()
 
 
-# This code creates a share, a queue, and two tasks, then starts the tasks. The
-# tasks run until somebody presses ENTER, at which time the scheduler stops and
-# printouts show diagnostic information about the tasks, share, and queue.
+# This code creates a share for each encoder object, creates encoder objects to read from, creates controller
+# objects and sets the gain and set point positions. 
 if __name__ == "__main__":
 
     # Create 2 encoder shares to share position data.
@@ -127,8 +129,7 @@ if __name__ == "__main__":
     # possible before the real-time scheduler is started
     gc.collect ()
 
-    # Run the scheduler with the chosen scheduling algorithm. Quit if any 
-    # character is received through the serial port
+    # Run the scheduler with the chosen scheduling algorithm. Quit if KeyboardInterrupt
     start_time = time.ticks_ms()
     while True:
         try:
