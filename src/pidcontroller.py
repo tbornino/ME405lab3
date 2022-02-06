@@ -121,5 +121,4 @@ class PIDController:
         '''
         if self.data_start_time == None:
             self.data_start_time = time.ticks_ms()
-        return f"{time.ticks_diff(time.ticks_ms(),self.data_start_time)},"
-                "{self._sensor_share.get()}\n"
+        return f"{time.ticks_diff(time.ticks_ms(),self.data_start_time)},{self._sensor_share.get()}\n"

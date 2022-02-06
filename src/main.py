@@ -116,9 +116,9 @@ if __name__ == "__main__":
     task_encoder2 = cotask.Task (task_enc2_fun, name = 'Encoder_2_Task', priority = 2, 
                          period = 10, profile = True, trace = False)
     task_controller1 = cotask.Task (task_controller1_fun, name = 'Controller_1_Task', priority = 1, 
-                         period = 50, profile = True, trace = False)
+                         period = 30, profile = True, trace = False)
     task_controller2 = cotask.Task (task_controller2_fun, name = 'Controller_2_Task', priority = 1, 
-                         period = 50, profile = True, trace = False)
+                         period = 30, profile = True, trace = False)
     task_data1 = cotask.Task (task_data1_fun, name = 'Data Collection Task', priority = 0,
                               period = 10, profile = True, trace = False)
     
