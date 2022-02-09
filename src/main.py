@@ -102,10 +102,6 @@ if __name__ == "__main__":
                                pyb.Pin.board.PB5, pyb.Timer(3, freq=20000))
     motor2 = motor.MotorDriver(pyb.Pin.board.PC1, pyb.Pin.board.PA0,
                                pyb.Pin.board.PA1, pyb.Timer(5, freq=20000))
-    
-#     share0 = task_share.Share ('h', thread_protect = False, name = "Share 0")
-#     q0 = task_share.Queue ('L', 16, thread_protect = False, overwrite = False,
-#                            name = "Queue 0")
 
     # Create the tasks. If trace is enabled for any task, memory will be
     # allocated for state transition tracing, and the application will run out
@@ -122,10 +118,6 @@ if __name__ == "__main__":
     task_data1 = cotask.Task (task_data1_fun, name = 'Data Collection Task', priority = 0,
                               period = 10, profile = True, trace = False)
     
-    # In the main module or wherever tasks are created:
-#     shares.print_task = print_task.PrintTask (name = 'Printing', 
-#         buf_size = 100, thread_protect = True, priority = 0)
-    #cotask.task_list.append (shares.print_task)
     cotask.task_list.append (task_encoder1)
     cotask.task_list.append (task_controller1)
     cotask.task_list.append (task_encoder2)
@@ -143,9 +135,3 @@ if __name__ == "__main__":
             cotask.task_list.pri_sched ()
         except KeyboardInterrupt:
             break
-
-#     # Print a table of task data and a table of shared information data
-#     print ('\n' + str (cotask.task_list))
-#     print (task_share.show_all ())
-#     print (task1.get_trace ())
-#     print ('\r\n')
